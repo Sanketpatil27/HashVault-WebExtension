@@ -1,0 +1,164 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 350px;
+    min-height: 520px;
+
+    background: #0f172a;
+    color: white;
+
+    font-family: Segoe UI, sans-serif;
+}
+
+.screen {
+    padding: 16px;
+}
+
+.hidden {
+    display: none;
+}
+
+.logo {
+    font-size: 52px;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.formGroup {
+    margin-bottom: 16px;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 6px;
+}
+
+input {
+    width: 100%;
+
+    padding: 10px;
+
+    border: 1px solid #334155;
+    border-radius: 10px;
+
+    background: #1e293b;
+    color: white;
+}
+
+button {
+    width: 100%;
+
+    padding: 10px;
+
+    margin-top: 10px;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    background: #2563eb;
+    color: white;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.topBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 16px;
+}
+
+.topBar button {
+    width: 40px;
+    margin: 0;
+}
+
+.card {
+    background: #1e293b;
+
+    border: 1px solid #334155;
+    border-radius: 12px;
+
+    padding: 12px;
+
+    margin-bottom: 12px;
+}
+
+.card label {
+    color: #94a3b8;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.passwordRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.passwordRow button {
+    width: 50px;
+    margin: 0;
+}
+
+#passwordList {
+    margin-top: 12px;
+
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.passwordItem {
+    background: #1e293b;
+
+    border: 1px solid #334155;
+    border-radius: 12px;
+
+    padding: 12px;
+
+    margin-bottom: 10px;
+}
+
+.passwordItem h4 {
+    margin-bottom: 5px;
+}
+
+.passwordItem p {
+    color: #cbd5e1;
+}
+
+.passwordItem button {
+    margin-top: 8px;
+}
+
+.passwordGeneratorRow
+{
+    display: flex;
+    gap: 8px;
+}
+
+.passwordGeneratorRow input
+{
+    flex: 1;
+}
+
+.passwordGeneratorRow button
+{
+    width: 100px;
+    margin-top: 0;
+}

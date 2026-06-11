@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>HashVault</title>
+
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" class="screen">
+
+        <div class="logo">🔐</div>
+
+        <h1>HashVault</h1>
+
+        <div class="formGroup">
+            <label>Username</label>
+            <input type="text" id="usernameInput" placeholder="Enter Username">
+        </div>
+
+        <div class="formGroup">
+            <label>Master Password</label>
+            <input type="password" id="passwordInput" placeholder="Enter Master Password">
+        </div>
+
+        <button id="loginBtn">
+            Unlock Vault
+        </button>
+
+    </div>
+
+
+
+    <!-- AUTOFILL SCREEN -->
+    <div id="autofillScreen" class="screen hidden">
+
+        <div class="topBar">
+
+            <h2>🔐 HashVault</h2>
+
+            <button id="settingsBtn">
+                ⚙
+            </button>
+
+        </div>
+
+        <div class="card">
+
+            <label>Current Site</label>
+
+            <p id="currentSite">
+                Unknown
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <label>Account</label>
+
+            <p id="currentAccount">
+                No Credentials Found
+            </p>
+
+        </div>
+
+        <button id="autofillBtn">
+            Autofill
+        </button>
+
+        <button id="openVaultBtn">
+            Open Vault
+        </button>
+
+    </div>
+
+
+
+    <!-- VAULT SCREEN -->
+    <div id="vaultScreen" class="screen hidden">
+
+        <div class="topBar">
+
+            <button id="backToAutofillBtn">
+                ←
+            </button>
+
+            <h2>Vault</h2>
+
+        </div>
+
+        <input type="text" id="searchInput" placeholder="Search Passwords">
+
+        <button id="addPasswordBtn">
+            + Add Password
+        </button>
+
+        <!-- passwords will be added in this div after login -->
+        <div id="passwordList"></div>
+
+    </div>
+
+
+
+    <!-- ADD / EDIT SCREEN -->
+    <div id="passwordFormScreen" class="screen hidden">
+
+        <div class="topBar">
+
+            <button id="backFromFormBtn">
+                ←
+            </button>
+
+            <h2 id="formTitle">
+                Add Password
+            </h2>
+
+        </div>
+
+        <div class="formGroup">
+            <label>Website</label>
+
+            <input type="text" id="websiteInput">
+        </div>
+
+        <div class="formGroup">
+            <label>Username</label>
+
+            <input type="text" id="vaultUsernameInput">
+        </div>
+
+        <div class="formGroup">
+            <label>Password</label>
+
+            <div class="passwordGeneratorRow">
+
+                <input type="text" id="vaultPasswordInput">
+
+                <button id="generatePasswordBtn">
+                    Generate
+                </button>
+
+            </div>
+        </div>
+
+        <div class="formGroup">
+            <label>Notes</label>
+
+            <input type="text" id="notesInput">
+        </div>
+
+        <button id="savePasswordBtn">
+            Save
+        </button>
+
+    </div>
+
+
+
+    <!-- DETAILS SCREEN -->
+    <div id="detailsScreen" class="screen hidden">
+
+        <div class="topBar">
+
+            <button id="backToVaultBtn">
+                ←
+            </button>
+
+            <h2>Password Details</h2>
+
+        </div>
+
+        <div class="card">
+
+            <label>Website</label>
+
+            <p id="detailWebsite"></p>
+
+        </div>
+
+        <div class="card">
+
+            <label>Username</label>
+
+            <p id="detailUsername"></p>
+
+        </div>
+
+        <div class="card">
+
+            <label>Password</label>
+
+            <div class="passwordRow">
+
+                <p id="detailPassword">
+                    ********
+                </p>
+
+                <button id="togglePasswordBtn">
+                    👁
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <label>Notes</label>
+
+            <p id="detailNotes"></p>
+
+        </div>
+
+        <button id="copyPasswordBtn">
+            Copy Password
+        </button>
+
+        <button id="detailAutofillBtn">
+            Autofill
+        </button>
+
+        <button id="editPasswordBtn">
+            Edit
+        </button>
+
+        <button id="deletePasswordBtn">
+            Delete
+        </button>
+
+    </div>
+
+
+
+    <!-- SETTINGS SCREEN -->
+    <div id="settingsScreen" class="screen hidden">
+
+        <div class="topBar">
+
+            <button id="backFromSettingsBtn">
+                ←
+            </button>
+
+            <h2>Settings</h2>
+
+        </div>
+
+        <button id="lockVaultBtn">
+            Lock Vault
+        </button>
+
+        <div class="card">
+
+            <label>Connection Status</label>
+
+            <p id="connectionStatus">
+                Offline
+            </p>
+
+        </div>
+
+    </div>
+
+    <script src="../services/AuthService.js"></script>
+    <script src="../services/StorageService.js"></script>
+    <script src="../services/ApiService.js"></script>
+    <script src="../services/ConnectionService.js"></script>
+
+    <script src="popup.js"></script>
+
+</body>
+
+</html>
