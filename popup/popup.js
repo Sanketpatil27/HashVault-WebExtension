@@ -238,7 +238,7 @@ async function loadPasswords(
 
 
 // =====================================
-// DETAILS
+// DETAILS SCREEN
 // =====================================
 
 function bindViewButtons() {
@@ -280,6 +280,13 @@ function openPasswordDetails(id) {
 
     document
         .getElementById(
+            "detailCategory"
+        )
+        .innerText =
+        selectedPassword.category || "";
+
+    document
+        .getElementById(
             "detailUsername"
         )
         .innerText =
@@ -309,7 +316,7 @@ function openPasswordDetails(id) {
 // ADD PASSWORD
 // =====================================
 
-function openAddPasswordForm() {
+async function openAddPasswordForm() {
     editingPasswordId = null;
 
     document
@@ -343,6 +350,14 @@ function openAddPasswordForm() {
         )
         .value = "";
 
+    await loadCategories();
+
+    document
+        .getElementById(
+            "categoryInput"
+        )
+        .value = "";
+
     showScreen(
         passwordFormScreen
     );
@@ -353,7 +368,7 @@ function openAddPasswordForm() {
 // EDIT PASSWORD
 // =====================================
 
-function openEditPasswordForm() {
+async function openEditPasswordForm() {
     editingPasswordId =
         selectedPassword.id;
 
@@ -392,6 +407,15 @@ function openEditPasswordForm() {
         .value =
         selectedPassword.notes;
 
+    await loadCategories();
+
+    document
+        .getElementById(
+            "categoryInput"
+        )
+        .value =
+        selectedPassword.category;
+
     showScreen(
         passwordFormScreen
     );
@@ -407,6 +431,13 @@ async function savePassword() {
         document.getElementById(
             "websiteInput"
         ).value;
+
+    const category =
+        document
+            .getElementById(
+                "categoryInput"
+            )
+            .value;
 
     const username =
         document.getElementById(
@@ -430,10 +461,10 @@ async function savePassword() {
     }
 
     if (editingPasswordId) {
-        await ApiService.updatePassword(editingPasswordId, website, username, password, notes);
+        await ApiService.updatePassword(editingPasswordId, website, username, password, category, notes);
     }
     else {
-        await ApiService.addPassword(website, username, password, notes);
+        await ApiService.addPassword(website, username, password, category, notes);
     }
 
     await loadPasswords();
@@ -534,6 +565,45 @@ async function autofill() {
                 selectedPassword.password
         }
     );
+}
+
+// ====================================
+// Load Categories
+// ====================================
+async function loadCategories() {
+    const categoryInput =
+        document.getElementById(
+            "categoryInput"
+        );
+
+    categoryInput.innerHTML =
+        `
+        <option value="">
+            Select Category
+        </option>
+        `;
+
+    const categories =
+        await ApiService
+            .getCategories();
+
+    categories.forEach(
+        category => {
+            categoryInput.innerHTML +=
+                `
+            <option value="${category}">
+                ${category}
+            </option>
+            `;
+        }
+    );
+
+    categoryInput.innerHTML +=
+        `
+    <option value="__NEW__">
+        + New Category
+    </option>
+    `;
 }
 
 
@@ -783,5 +853,35 @@ document.addEventListener(
             .addEventListener(
                 "click",
                 generatePassword
+            );
+
+        document
+            .getElementById("categoryInput")
+            .addEventListener(
+                "change",
+                async function () {
+                    if (
+                        this.value !==
+                        "__NEW__"
+                    ) {
+                        return;
+                    }
+
+                    const category = prompt("Enter Category Name");
+
+                    if (!category) {
+                        return;
+                    }
+
+                    const option = document.createElement("option");
+
+                    option.value = category;
+
+                    option.textContent = category;
+
+                    this.insertBefore(option, this.lastElementChild);
+
+                    this.value = category;
+                }
             );
     });
