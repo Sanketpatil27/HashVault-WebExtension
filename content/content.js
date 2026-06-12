@@ -2,48 +2,36 @@
 // HELPERS
 // =====================================
 
-function setNativeValue(
-    element,
-    value
-) {
-    const prototype =
-        Object.getPrototypeOf(
-            element
-        );
+function setNativeValue(element, value)
+{
+    const nativeInputValueSetter =
+        Object.getOwnPropertyDescriptor(
+            window.HTMLInputElement.prototype,
+            "value"
+        ).set;
 
-    const valueSetter =
-        Object
-            .getOwnPropertyDescriptor(
-                prototype,
-                "value"
-            )
-            ?.set;
-
-    if (valueSetter) {
-        valueSetter.call(
-            element,
-            value
-        );
-    }
-    else {
-        element.value = value;
-    }
+    nativeInputValueSetter.call(
+        element,
+        value
+    );
 
     element.dispatchEvent(
-        new Event(
+        new InputEvent(
             "input",
             {
-                bubbles: true
+                bubbles: true,
+                composed: true
             }
         )
     );
 
     element.dispatchEvent(
-        new Event("change",{bubbles: true})
-    );
-
-    element.dispatchEvent(
-        new Event("blur", { bubbles: true })
+        new Event(
+            "change",
+            {
+                bubbles: true
+            }
+        )
     );
 }
 
@@ -52,8 +40,20 @@ function setNativeValue(
 // VISIBILITY CHECK
 // =====================================
 
-function isVisible(element) {
-    return (element && element.offsetParent !== null);
+function isVisible(element)
+{
+    if (!element)
+        return false;
+
+    const style =
+        getComputedStyle(
+            element
+        );
+
+    return (
+        style.display !== "none" &&
+        style.visibility !== "hidden"
+    );
 }
 
 
@@ -62,24 +62,37 @@ function isVisible(element) {
 // =====================================
 
 function findUsernameField() {
-    const selectors =
-        [
-            'input[type="email"]',
 
-            'input[name*="email" i]',
-            'input[id*="email" i]',
+    const selectors = [
+        
+        'input[autocomplete="username"]',
+        'input[autocomplete="email"]',
 
-            'input[name*="user" i]',
-            'input[id*="user" i]',
+        'input[type="email"]',
 
-            'input[name*="login" i]',
-            'input[id*="login" i]',
+        'input[name="email"]',
+        'input[id="email"]',
 
-            'input[name*="account" i]',
-            'input[id*="account" i]',
+        'input[name*="email" i]',
+        'input[id*="email" i]',
 
-            'input[type="text"]'
-        ];
+        'input[name="username"]',
+        'input[id="username"]',
+
+        'input[name*="user" i]',
+        'input[id*="user" i]',
+
+        'input[name*="login" i]',
+        'input[id*="login" i]',
+
+        'input[name*="identifier" i]',
+        'input[id*="identifier" i]',
+
+        'input[name*="account" i]',
+        'input[id*="account" i]',
+
+        'input[type="text"]'
+    ];
 
     for (const selector of selectors) {
         const fields =
@@ -88,7 +101,11 @@ function findUsernameField() {
             );
 
         for (const field of fields) {
-            if (isVisible(field)) {
+            if (
+                isVisible(field) &&
+                !field.disabled &&
+                !field.readOnly
+            ) {
                 return field;
             }
         }
@@ -109,7 +126,11 @@ function findPasswordField() {
         );
 
     for (const field of fields) {
-        if (isVisible(field)) {
+        if (
+            isVisible(field) &&
+            !field.disabled &&
+            !field.readOnly
+        ) {
             return field;
         }
     }
@@ -122,24 +143,56 @@ function findPasswordField() {
 // AUTOFILL
 // =====================================
 
-function autofill(username, password) {
+async function autofill(username, password) {
+    let attempts = 0;
 
-    const usernameField = findUsernameField();
-    const passwordField = findPasswordField();
+    const interval =
+        setInterval(() => {
 
-    if (usernameField) {
-        usernameField.focus();
+            const usernameField =
+                findUsernameField();
 
-        setNativeValue(usernameField, username);
-    }
+            const passwordField =
+                findPasswordField();
 
-    if (passwordField) {
-        passwordField.focus();
+            console.log("username:", username);
+            console.log("password:", password);
+            console.log("usernameField:", usernameField);
+            console.log("passwordField:", passwordField);
 
-        setNativeValue(passwordField, password);
-    }
+            if (usernameField) {
+                usernameField.focus();
 
-    console.log("HashVault Autofill Complete");
+                setNativeValue(
+                    usernameField,
+                    username
+                );
+            }
+
+            if (passwordField) {
+                passwordField.focus();
+
+                setNativeValue(
+                    passwordField,
+                    password
+                );
+            }
+
+            if (usernameField) {
+                clearInterval(interval);
+
+                console.log(
+                    "HashVault Autofill Complete"
+                );
+            }
+
+            attempts++;
+
+            if (attempts > 10) {
+                clearInterval(interval);
+            }
+
+        }, 300);
 }
 
 

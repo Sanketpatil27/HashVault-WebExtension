@@ -454,7 +454,7 @@ async function savePassword() {
             "notesInput"
         ).value;
 
-    if (!website || !username || !password) {
+    if (!website || !username || !password || !category || !notes) {
         alert("Fill all fields");
 
         return;

@@ -1,6 +1,5 @@
 class ApiService {
-    static BASE_URL =
-        "http://localhost:8080";
+    static BASE_URL = CONFIG.BASE_URL;;
 
     static async getPasswords() {
         const token =

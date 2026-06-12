@@ -1,15 +1,9 @@
 class AuthService {
-    static async login(
-        username,
-        password
-    ) {
+    static async login(username, password) {
         const response =
-            await fetch(
-                `http://localhost:8080/login/${encodeURIComponent(username)}/${encodeURIComponent(password)}`
-            );
+            await fetch(`${CONFIG.BASE_URL}/login/${encodeURIComponent(username)}/${encodeURIComponent(password)}`);
 
-        const data =
-            await response.json();
+        const data = await response.json();
 
         if (data.success) {
             localStorage.setItem(
