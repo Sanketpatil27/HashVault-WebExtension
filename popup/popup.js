@@ -133,7 +133,13 @@ async function initializeAutofill() {
                 hostname
             );
 
-    if (credential) {
+    if (credential && credential.username) {
+        autofillBtn.disabled = false;
+
+        autofillBtn.style.opacity = "1";
+        autofillBtn.style.cursor = "pointer";
+        autofillBtn.style.filter = "none";
+        
         document.getElementById("currentAccount")
             .innerText = credential.username;
 
@@ -141,6 +147,11 @@ async function initializeAutofill() {
             credential;
     }
     else {
+        autofillBtn.disabled = true;
+        autofillBtn.style.opacity = "0.5";
+        autofillBtn.style.cursor = "not-allowed";
+        autofillBtn.style.filter = "grayscale(100%)";
+
         document
             .getElementById(
                 "currentAccount"
@@ -767,14 +778,14 @@ document.addEventListener(
                 autofill
             );
 
-        document
-            .getElementById(
-                "detailAutofillBtn"
-            )
-            .addEventListener(
-                "click",
-                autofill
-            );
+        // document
+        //     .getElementById(
+        //         "detailAutofillBtn"
+        //     )
+        //     .addEventListener(
+        //         "click",
+        //         autofill
+        //     );
 
         document
             .getElementById(
